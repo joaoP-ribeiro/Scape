@@ -33,6 +33,10 @@ class Tela():
         self.tela_escuro = uic.loadUi("C:/Users/52211545874/Desktop/Scape_room-main/telas/escuro.ui")
         self.tela_ataque_freddy = uic.loadUi("C:/Users/52211545874/Desktop/Scape_room-main/telas/ataque_freddy.ui")
         self.tela_ataque_springtrap = uic.loadUi("C:/Users/52211545874/Desktop/Scape_room-main/telas/ataque_springtrap.ui")
+        
+        self.tela_inicio = uic.loadUi("C:/Users/52211545874/Desktop/Scape_room-main/telas/inicio_tela.ui")
+        self.tela_final_f = uic.loadUi("C:/Users/52211545874/Desktop/Scape_room-main/telas/final_f.ui")
+        self.tela_final_v = uic.loadUi("C:/Users/52211545874/Desktop/Scape_room-main/telas/final_v.ui")
 
         self.tela_saida.bt_cima.clicked.connect(lambda: self.abrir_janela_monstro(self.tela_saida, self.tela_cima))
         self.tela_saida.bt_dir.clicked.connect(lambda: self.abrir_janela(self.tela_saida, self.tela_lab))
@@ -58,6 +62,10 @@ class Tela():
         self.tela_robo.bt_papel2.clicked.connect(lambda: self.abrir_frame(self.tela_robo.frame2, self.tela_robo.bt_frames_robo))
         
         
+        self.tela_inicio.bt_inicio.clicked.connect(lambda: self.abrir_janela(self.tela_inicio, self.tela_saida))
+        self.tela_final_f.bt_finalizar_f.clicked.connect(lambda: self.abrir_tela_morte(self.tela_final_f))
+        #self.tela_final_v.bt_finalizar_v.connect(lambda: self.abrir_janela(self.tela_inicio, self.tela_saida))
+
         self.tela_ataque_freddy.bt_finalizar.clicked.connect(lambda: self.fechar_tela())
         self.tela_ataque_springtrap.bt_finalizar.clicked.connect(lambda: self.fechar_tela())
 
@@ -68,9 +76,9 @@ class Tela():
 
         self.tela_robo.bt_frames_robo.clicked.connect(lambda: self.fechar_frames())
 
-        self.tela_saida.show()
+        self.tela_inicio.show()
         self.fechar_frames()
-        self.tempo_morte(5)
+        
 
         app.exec()
         
@@ -81,18 +89,25 @@ class Tela():
         """
         if not self.ativo and self.energia:
             self.ultima_janela = janela_anterior
-            janela_anterior.close()
-            proxima_janela.show()
-            self.som("choque")
-            self.contador += 1
-            self.queda_energia(self.contador)
+            if self.ultima_janela == self.tela_inicio:
+                self.tempo_morte(5)
+                janela_anterior.close()
+                proxima_janela.show()
+                self.som("choque")
+                self.contador += 1
+                self.queda_energia(self.contador)
+            else:
+                janela_anterior.close()
+                proxima_janela.show()
+                self.som("choque")
+                self.contador += 1
+                self.queda_energia(self.contador)
         else:
             if not self.energia:
-                janela_anterior.close()
-                self.abrir_tela_sem_energia()
+                self.abrir_tela_sem_energia(janela_anterior)
             else:
-                 janela_anterior.close()
-                 self.abrir_tela_morte()
+
+                 self.abrir_tela_morte(janela_anterior)
     
     def abrir_janela_monstro(self, janela_anterior, proxima_janela):
         """
@@ -105,11 +120,9 @@ class Tela():
             proxima_janela.show()
         else:
             if not self.energia:
-                janela_anterior.close()
-                self.abrir_tela_sem_energia()
+                self.abrir_tela_sem_energia(janela_anterior)
             else:
-                 janela_anterior.close()
-                 self.abrir_tela_morte()
+                self.abrir_tela_morte(janela_anterior)
 
     
 
@@ -153,9 +166,10 @@ class Tela():
         if contador >= 5:
             self.energia = False
 
-    def abrir_tela_sem_energia(self):
+    def abrir_tela_sem_energia(self, fechar):
+        fechar.close()
         self.tela_escuro.show()
-        self.som("respiração")
+        self.som("choque")
         self.tela_escuro.close()
 
 
@@ -185,7 +199,8 @@ class Tela():
         self.ativo = False
         self.som("respiração")
 
-    def abrir_tela_morte(self):
+    def abrir_tela_morte(self, fechar):
+        fechar.close()
         self.tela_escuro.show()
         self.som("respiração")
         self.tela_escuro.close()
@@ -205,9 +220,13 @@ class Tela():
     
     def confirmar_senha(self):
         senha = self.tela_saida.inp_senha.text()
-        print(senha)
         if senha == "12345":
             self.tela_saida.inp_senha.clear()
+            self.tela_saida.close()
+            self.tela_final_f.show()
+
         else:
-            print("bbbbb")
+            self.tela_saida.close()
+            self.abrir_tela_sem_energia()
             self.tela_saida.inp_senha.clear()
+            

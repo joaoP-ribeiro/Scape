@@ -35,6 +35,9 @@
     <property name="pixmap">
      <pixmap>../imagens/inicio.png</pixmap>
     </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="bt_inicio">
     <property name="geometry">
