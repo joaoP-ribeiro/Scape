@@ -1,0 +1,22 @@
+<RCC>
+  <qresource prefix="img">
+    <file>final_v.png</file>
+    <file>final_f.png</file>
+    <file>inicio.png</file>
+    <file>senha.png</file>
+    <file>ataque_springtrap.gif</file>
+    <file>ordem.png</file>
+    <file>corra.png</file>
+    <file>estamos.png</file>
+    <file>asdfasdf.png</file>
+    <file>estou_obs.png</file>
+    <file>senha.png</file>
+    <file>nao_estamos_parados.png</file>
+    <file>olha_pra_cima.png</file>
+    <file>morte.png</file>
+    <file>robo.png</file>
+    <file>lab.png</file>
+    <file>cima.png</file>
+    <file>saida.png</file>
+  </qresource>
+</RCC>
